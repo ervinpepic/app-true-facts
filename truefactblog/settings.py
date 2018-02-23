@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    #####modules####
+    # 'crispy_forms',
+    'bootstrapform',
 
     ####My installed Apps####
     'blog.apps.BlogConfig',
@@ -57,7 +60,7 @@ ROOT_URLCONF = 'truefactblog.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -121,3 +124,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static_in_project")
+]
+STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_files", "static_root")
+#..............................###........................###......................#
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_files", "media_root")
+#..............................###........................###......................#
+# CRISPY_TEMPLATE_PACK = 'uni_form'

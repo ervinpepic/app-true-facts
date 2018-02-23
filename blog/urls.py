@@ -1,9 +1,16 @@
-from django.urls import path
+from django.urls import path, re_path
 
 from . import views
 
-urlpatterns = [
+app_name='blog'
 
-    path('', views.homeView, name='home'),
+urlpatterns = [
+	
+    path('', views.post_list_view, name='home'),
+    path('<title>', views.category_detail_view, name='category_detail'),
+    path('create', views.post_create_view, name='create'),
+    path('<slug>', views.post_detail_view, name='detail'),
+
+	
 
  ]
