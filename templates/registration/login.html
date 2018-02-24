@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block content %}
+<div class="row">
+	<div class="col-6">
+		<h2 class="mt-5 mb-5">Please login</h2>
+		<form method="POST">
+			{% csrf_token %}
+			{{ form|bootstrap }}
+			<button class="btn btn-primary mt-5 mb-5" type="submit">Login</button>
+		</form>
+	</div>
+	<div class="col-6">
+		<h2 class="mt-5 mb-5">Do not have an account? Please register.</h2>
+		<a href="{% url 'blog:signup' %}" class="btn btn-warning float-right">Register now</a>
+	</div>
+</div>
+<p class="mt-5 mb-5">After login, you will be redirected to the home page.</p>
+<p class="mt-5 mb-5">If you have problem with login please contact us on contanct page.</p>
+
+
+
+
+
+{% endblock content %}
