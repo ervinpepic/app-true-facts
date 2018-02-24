@@ -5,6 +5,7 @@ from django.urls import reverse
 import random
 from ckeditor.fields import RichTextField
 from django.conf import settings
+from django.utils.text import slugify
 
 
 #################GlobalFunction#################
@@ -34,7 +35,7 @@ def get_last_five_days_post():
 class Post(models.Model):
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL, related_name='vlasnik_postova', on_delete=models.CASCADE, default=1)
 	title			= models.CharField(max_length=120)
-	slug 			= models.SlugField(max_length=180, unique=True)
+	slug 			= models.SlugField(max_length=180, unique=True, blank=True)
 	categories 		= models.ManyToManyField('Category', related_name='posts')
 	image			= models.ImageField(upload_to=image_name_and_path)
 	body			= RichTextField()
@@ -47,6 +48,11 @@ class Post(models.Model):
 
 	def get_absolute_url(self):
 		return reverse('blog:post_detail', kwargs={'slug': self.slug})
+
+	def save(self, *args, **kwargs):
+		self.slug = slugify(self.title)
+		super(Post, self).save(*args, **kwargs)
+
 
 class Category(models.Model):
 	title			= models.CharField(max_length=50)

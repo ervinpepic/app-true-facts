@@ -3,8 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from .models import Category, Post
 
-class PostAdmin(admin.ModelAdmin):
-	prepopulated_fields = {"slug": ("title",)}
+# class PostAdmin(admin.ModelAdmin):
+	# prepopulated_fields = {"slug": ("title",)}
 
-admin.site.register(Post, PostAdmin)
+admin.site.register(Post)
 admin.site.register(Category)
