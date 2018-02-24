@@ -36,7 +36,7 @@ class Post(models.Model):
 	user 			= models.ForeignKey(settings.AUTH_USER_MODEL, related_name='vlasnik_postova', on_delete=models.CASCADE, default=1)
 	title			= models.CharField(max_length=120)
 	slug 			= models.SlugField(max_length=180, unique=True, blank=True)
-	categories 		= models.ManyToManyField('Category', related_name='posts')
+	categories 		= models.ManyToManyField('Category', related_name='posts', blank=False)
 	image			= models.ImageField(upload_to=image_name_and_path)
 	body			= RichTextField()
 	drafts			= models.BooleanField(default=False)

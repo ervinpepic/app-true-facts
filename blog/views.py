@@ -3,7 +3,7 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.views import login
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -16,7 +16,6 @@ from .models import (
 	get_last_week_post, 
 	get_last_five_days_post
 )
-
 #...................###..................#
 
 def post_list_view(request):
@@ -47,23 +46,6 @@ def post_detail_view(request, slug):
 	}
 	return render(request, template, context)
 
-
-def post_create_view(request):
-	if not request.user.is_staff or not request.user.is_superuser:
-		raise Http404	
-	create_form = PostForm(request.POST or None, request.FILES or None)
-	if create_form.is_valid():
-		post_form = create_form.save(commit=False)
-		post_form.user = request.user
-		post_form.save()
-		messages.success(request, "Successfully created post. Thank you.")
-		return HttpResponseRedirect('/blog')
-	context = {
-		"form": create_form,
-	}
-	return render(request, "blog/post_form.html", context)
-
-
 def category_detail_view(request, title):
 	category = get_object_or_404(Category, title=title)
 	related_category_post = category.posts.all()
@@ -78,6 +60,27 @@ def category_detail_view(request, title):
 	}
 	return render(request, template, context)
 
+
+class PostCreateView(CreateView):
+	template_name = 'blog/post_form.html'
+	model = Post
+	form_class = PostForm
+
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		form.save()
+		return super(PostCreateView, self).form_valid(form)
+
+
+class PostUpdateView(UpdateView):
+	model = Post
+	form_class = PostForm
+	template_name = 'blog/post_form.html'
+
+	def form_valid(self, form):
+		form.instance.user = self.request.user
+		form.save()
+		return super(PostUpdateView, self).form_valid(form)
 
 class LoginView(FormView):
 	form_class = AuthenticationForm
