@@ -3,25 +3,30 @@ from django.contrib import messages
 from django.shortcuts import redirect, render, get_object_or_404
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.urls import reverse_lazy
+from django.views.generic import CreateView
 from django.contrib.auth.views import login
 from django.views.generic.edit import FormView
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from django.views import generic
 
 #...................###..................#
-from .models import Post, Category, get_recently_post, get_last_week_post, get_last_five_days_post
 from .forms import PostForm
-#...................###..................#
+from .models import ( 
+	Post, Category, 
+	get_recently_post, 
+	get_last_week_post, 
+	get_last_five_days_post
+)
 
+#...................###..................#
 
 def post_list_view(request):
-	template = 'blog/posts_list.html'
-	category_queryset = Category.objects.all()
 	post_queryset = Post.objects.all().order_by('-created_date')
 	paginator = Paginator(post_queryset, 10)
 	page = request.GET.get('page')
 	page_post = paginator.get_page(page)
 	recently_post = Post.objects.filter(created_date__gte=get_recently_post())
+	category_queryset = Category.objects.all()
+	template = 'blog/posts_list.html'
 	context = {	
 		'page_post': page_post,
 		'categories': category_queryset,
@@ -63,8 +68,8 @@ def category_detail_view(request, title):
 	category = get_object_or_404(Category, title=title)
 	related_category_post = category.posts.all()
 	categories = Category.objects.all()
-	template = 'blog/category_detail.html'
 	recently_post = Post.objects.filter(created_date__gte=get_last_week_post())
+	template = 'blog/category_detail.html'
 	context = {
 		'category': category,
 		'related_category_post': related_category_post,
@@ -79,7 +84,6 @@ class LoginView(FormView):
 	success_url = reverse_lazy('blog:home')
 	template_name = 'registration/login.html'
 
-
 	def dispatch(self, *args, **kwargs):
 		if self.request.user.is_authenticated:
 			return redirect('/blog')
@@ -90,7 +94,7 @@ class LoginView(FormView):
 		return HttpResponseRedirect(self.get_success_url())
 
 
-class SignUp(generic.CreateView):
+class SignUpView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'registration/signup.html'
