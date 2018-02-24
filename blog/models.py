@@ -1,10 +1,11 @@
+import datetime
 import os
-import random
-
-
-from django.urls import reverse
 from django.db import models
+from django.urls import reverse
+import random
+from ckeditor.fields import RichTextField
 from django.conf import settings
+
 
 #################GlobalFunction#################
 
@@ -14,6 +15,20 @@ def image_name_and_path(instance, imagename):
 	final_image_name = "blog/{new_image_name}-{img_extension}".format(new_image_name=new_image_name, img_extension=img_extension)
 	return final_image_name
 
+def get_recently_post():
+	today = datetime.date.today()
+	yesterday = today - datetime.timedelta(1)
+	return yesterday
+
+def get_last_week_post():
+	today = datetime.date.today()
+	last_week_post = today - datetime.timedelta(7)
+	return last_week_post
+
+def get_last_five_days_post():
+	today = datetime.date.today()
+	last_week_post = today - datetime.timedelta(5)
+	return last_week_post
 #################END GlobalFunction#################
 
 class Post(models.Model):
@@ -22,7 +37,7 @@ class Post(models.Model):
 	slug 			= models.SlugField(max_length=180, unique=True)
 	categories 		= models.ManyToManyField('Category', related_name='posts')
 	image			= models.ImageField(upload_to=image_name_and_path)
-	body			= models.TextField()
+	body			= RichTextField()
 	drafts			= models.BooleanField(default=False)
 	created_date 	= models.DateTimeField(auto_now_add=True)
 	edited_date		= models.DateTimeField(auto_now=True)
@@ -31,13 +46,7 @@ class Post(models.Model):
 		return self.title
 
 	def get_absolute_url(self):
-		return reverse('blog:detail', kwargs={'slug': self.slug})
-
-	# def recently_post(self):
-	# 	now = timezone.now()
-	# 	return now - datetime.timedelta(days=2) <= self.created_date <= now
-
-
+		return reverse('blog:post_detail', kwargs={'slug': self.slug})
 
 class Category(models.Model):
 	title			= models.CharField(max_length=50)

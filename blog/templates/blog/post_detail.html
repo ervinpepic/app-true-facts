@@ -27,7 +27,7 @@
     <hr>
 
     <!-- Post Content -->
-    <p class="lead">{{ post.body }}</p>
+    <p class="lead">{{ post.body|safe }}</p>
     <hr>
 
     <!---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- -- -->
@@ -96,7 +96,7 @@
           <div class="col">
             <ul class="list-unstyled mb-2">
               <li>        
-                <a href="#">{{ category.title }}</a>
+                <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
               </li>
             </ul>      
           </div>
@@ -104,4 +104,20 @@
         </div>
       </div>
     </div>
-{% endblock content %}
+    <div class="card my-4">
+      <h5 class="card-header">Post in last 5 days</h5>
+      <div class="card-body">
+        <div class="row">
+          {% for recently_published_post in recently_post %}
+          <div class="col-6">
+            <ul class="list-unstyled mb-2">
+              <li>
+                <a href="{{ recently_published_post.get_absolute_url }}">{{ recently_published_post.title }}</a>
+              </li>
+            </ul>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    {% endblock content %}

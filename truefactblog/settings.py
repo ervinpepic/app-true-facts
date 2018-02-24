@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #####modules####
     # 'crispy_forms',
     'bootstrapform',
+    'ckeditor',
 
     ####My installed Apps####
     'blog.apps.BlogConfig',
@@ -134,3 +135,17 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), "static_files", "media_root")
 #..............................###........................###......................#
 # CRISPY_TEMPLATE_PACK = 'uni_form'
+
+# CKEDITOR_BASEPATH = "static_root/ckeditor/ckeditor"
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Full',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+            ['Link', 'Unlink'],
+            ['RemoveFormat', 'Source']
+        ]
+    }
+}
