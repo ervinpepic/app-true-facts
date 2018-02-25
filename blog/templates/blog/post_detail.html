@@ -1,5 +1,7 @@
 {% extends "base.html" %}
+
 {% block content %}
+
 
 <div class="row">
 	
@@ -36,88 +38,54 @@
     <!---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- ---- -- -->
 
     <!-- Comments Form -->
-    <div class="card my-4">
-      <h5 class="card-header">Leave a Comment:</h5>
-      <div class="card-body">
-        <form>
-          <div class="form-group">
-            <textarea class="form-control" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-      </div>
-    </div>
+    <div id="disqus_thread"></div>
+    <script>
+      (function() { // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+        s.src = 'https://http-localhost-8000-blog-2.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+      })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+<!-- End Comments Form -->
 
-    <!-- Single Comment -->
-    <div class="media mb-4">
-      <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-      <div class="media-body">
-        <h5 class="mt-0">Commenter Name</h5>
-        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-      </div>
-    </div>
 
-    <!-- Comment with nested comments -->
-    <div class="media mb-4">
-      <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-      <div class="media-body">
-        <h5 class="mt-0">Commenter Name</h5>
-        Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+<!-- Sidebar Widgets Column -->
+<div class="col-md-4">
 
-        <div class="media mt-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-          </div>
+  <!-- Categories Widget -->
+  <div class="card my-4">
+    <h5 class="card-header">Related Categories</h5>
+    <div class="card-body">
+      <div class="row">
+        {% for category in related_category  %}	
+        <div class="col">
+          <ul class="list-unstyled mb-2">
+            <li>        
+              <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
+            </li>
+          </ul>      
         </div>
-
-        <div class="media mt-4">
-          <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-          <div class="media-body">
-            <h5 class="mt-0">Commenter Name</h5>
-            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
-          </div>
-        </div>
-
+        {% endfor %}
       </div>
     </div>
   </div>
-
-  <!-- Sidebar Widgets Column -->
-  <div class="col-md-4">
-
-    <!-- Categories Widget -->
-    <div class="card my-4">
-      <h5 class="card-header">Related Categories</h5>
-      <div class="card-body">
-        <div class="row">
-          {% for category in related_category  %}	
-          <div class="col">
-            <ul class="list-unstyled mb-2">
-              <li>        
-                <a href="{{ category.get_absolute_url }}">{{ category.title }}</a>
-              </li>
-            </ul>      
-          </div>
-          {% endfor %}
+  <div class="card my-4">
+    <h5 class="card-header">Post in last 5 days</h5>
+    <div class="card-body">
+      <div class="row">
+        {% for recently_published_post in recently_post %}
+        <div class="col-6">
+          <ul class="list-unstyled mb-2">
+            <li>
+              <a href="{{ recently_published_post.get_absolute_url }}">{{ recently_published_post.title }}</a>
+            </li>
+          </ul>
         </div>
+        {% endfor %}
       </div>
     </div>
-    <div class="card my-4">
-      <h5 class="card-header">Post in last 5 days</h5>
-      <div class="card-body">
-        <div class="row">
-          {% for recently_published_post in recently_post %}
-          <div class="col-6">
-            <ul class="list-unstyled mb-2">
-              <li>
-                <a href="{{ recently_published_post.get_absolute_url }}">{{ recently_published_post.title }}</a>
-              </li>
-            </ul>
-          </div>
-          {% endfor %}
-        </div>
-      </div>
-    </div>
-    {% endblock content %}
+  </div>
+  {% endblock content %}

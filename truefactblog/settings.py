@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     # 'crispy_forms',
     'bootstrapform',
     'ckeditor',
-
     ####My installed Apps####
     'blog.apps.BlogConfig',
 ]
